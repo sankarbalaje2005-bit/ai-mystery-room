@@ -16,6 +16,9 @@ import {
 } from "lucide-react";
 import "./InvestigationRoom.css";
 
+// Local development fallback; deployed URL comes from frontend/.env
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 function InvestigationRoom() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -35,16 +38,15 @@ function InvestigationRoom() {
   const [loadingHint, setLoadingHint] = useState(false);
   const [hintError, setHintError] = useState("");
 
-  // Load the mystery, discovered evidence, and current hint allowance.
+  // Load the mystery and current investigation progress.
   useEffect(() => {
     const fetchMystery = async () => {
       try {
         setLoading(true);
         setError("");
 
-        const response = await fetch(
-          `http://localhost:5000/api/mysteries/${id}`,
-        );
+        const response = await fetch(`${API_BASE_URL}/api/mysteries/${id}`);
+
         const data = await response.json();
 
         if (!response.ok || !data.success) {
@@ -52,8 +54,10 @@ function InvestigationRoom() {
         }
 
         setMystery(data.mystery);
+
         setHintStatus(data.hintStatus || { limit: 0, used: 0, remaining: 0 });
-        setRevealedHints([]);
+
+        setRevealedHints(data.revealedHints || []);
       } catch (err) {
         setError(err.message || "Unable to load mystery.");
       } finally {
@@ -71,9 +75,12 @@ function InvestigationRoom() {
       setDiscoveryError("");
 
       const response = await fetch(
-        `http://localhost:5000/api/mysteries/${id}/evidence/${evidenceId}/discover`,
-        { method: "POST" },
+        `${API_BASE_URL}/api/mysteries/${id}/evidence/${evidenceId}/discover`,
+        {
+          method: "POST",
+        },
       );
+
       const data = await response.json();
 
       if (!response.ok || !data.success) {
@@ -101,19 +108,23 @@ function InvestigationRoom() {
       setLoadingHint(true);
       setHintError("");
 
-      const response = await fetch(
-        `http://localhost:5000/api/mysteries/${id}/hint`,
-        { method: "POST" },
-      );
+      const response = await fetch(`${API_BASE_URL}/api/mysteries/${id}/hint`, {
+        method: "POST",
+      });
+
       const data = await response.json();
 
       if (!response.ok || !data.success) {
-        if (data.hintStatus) setHintStatus(data.hintStatus);
+        if (data.hintStatus) {
+          setHintStatus(data.hintStatus);
+        }
+
         throw new Error(data.message || "Unable to retrieve the next hint.");
       }
 
-      // The API may return the hint as a string or as an object.
+      // The API may return the hint as a string or object.
       const hintValue = data.hint;
+
       const hintText =
         typeof hintValue === "string"
           ? hintValue
@@ -130,7 +141,10 @@ function InvestigationRoom() {
 
       setRevealedHints((previousHints) => [
         ...previousHints,
-        { number: hintNumber, text: hintText },
+        {
+          number: hintNumber,
+          text: hintText,
+        },
       ]);
 
       if (data.hintStatus) {
@@ -173,6 +187,7 @@ function InvestigationRoom() {
   const discoveredCount = mystery.evidence.filter(
     (item) => item.discovered,
   ).length;
+
   const hintsExhausted = hintStatus.remaining <= 0;
 
   return (
@@ -195,7 +210,9 @@ function InvestigationRoom() {
             <Search size={15} />
             ACTIVE INVESTIGATION
           </span>
+
           <h1>{mystery.title}</h1>
+
           <p>
             {mystery.category} · {mystery.difficulty} Difficulty
           </p>
@@ -206,7 +223,9 @@ function InvestigationRoom() {
             <FileText size={22} />
             <h2>CASE BRIEFING</h2>
           </div>
+
           <p>{mystery.introduction}</p>
+
           <div className="case-setting">
             <strong>LOCATION / SETTING</strong>
             <p>{mystery.setting}</p>
@@ -224,11 +243,14 @@ function InvestigationRoom() {
             {mystery.suspects.map((suspect, index) => (
               <article className="suspect-card" key={suspect.id}>
                 <div className="suspect-number">SUSPECT 0{index + 1}</div>
+
                 <div className="suspect-icon">
                   <Shield size={28} />
                 </div>
+
                 <h3>{suspect.name}</h3>
                 <p>{suspect.description}</p>
+
                 <div className="suspect-alibi">
                   <strong>ALIBI</strong>
                   <p>{suspect.alibi}</p>
@@ -242,6 +264,7 @@ function InvestigationRoom() {
           <div className="section-title">
             <Fingerprint size={22} />
             <h2>EVIDENCE REGISTER</h2>
+
             <span>
               {discoveredCount}/{mystery.evidence.length} DISCOVERED
             </span>
@@ -264,13 +287,16 @@ function InvestigationRoom() {
               >
                 <div className="evidence-card-header">
                   <span>EVIDENCE 0{index + 1}</span>
+
                   {item.discovered ? <Unlock size={19} /> : <Lock size={19} />}
                 </div>
 
                 <h3>{item.title}</h3>
+
                 {item.discovered ? (
                   <>
                     <p>{item.description}</p>
+
                     <span className="discovered-label">
                       <Eye size={15} />
                       CLUE DISCOVERED
@@ -281,6 +307,7 @@ function InvestigationRoom() {
                     <p className="locked-description">
                       This evidence has not been examined yet.
                     </p>
+
                     <button
                       className="discover-button"
                       onClick={() => discoverEvidence(item.id)}
@@ -309,6 +336,7 @@ function InvestigationRoom() {
           <div className="section-title">
             <Lightbulb size={22} />
             <h2>DETECTIVE HINTS</h2>
+
             <span>
               {hintStatus.remaining} OF {hintStatus.limit} REMAINING
             </span>
@@ -319,6 +347,7 @@ function InvestigationRoom() {
               <div className="hint-icon-wrap">
                 <Lightbulb size={25} />
               </div>
+
               <div>
                 <h3>Need a little direction?</h3>
                 <p>
@@ -374,6 +403,7 @@ function InvestigationRoom() {
             {revealedHints.length > 0 && (
               <div className="revealed-hints">
                 <h3>REVEALED CLUES</h3>
+
                 {revealedHints.map((hint, index) => (
                   <article
                     className="hint-card"
@@ -383,6 +413,7 @@ function InvestigationRoom() {
                       <Lightbulb size={17} />
                       HINT {hint.number}
                     </div>
+
                     <p>{hint.text}</p>
                   </article>
                 ))}

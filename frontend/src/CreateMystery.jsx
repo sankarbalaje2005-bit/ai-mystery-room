@@ -14,6 +14,9 @@ import {
 } from "lucide-react";
 import "./CreateMystery.css";
 
+// Use the deployed backend URL or localhost during development.
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 function CreateMystery() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -46,7 +49,7 @@ function CreateMystery() {
     setGeneratedMystery(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/mysteries", {
+      const response = await fetch(`${API_BASE_URL}/api/mysteries`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,6 +72,7 @@ function CreateMystery() {
       setMessage("Your mystery has been generated successfully!");
     } catch (err) {
       console.error("Mystery generation failed:", err);
+
       setError(
         err.message || "Unable to connect to the backend. Please try again.",
       );
@@ -92,7 +96,8 @@ function CreateMystery() {
         </div>
 
         <button className="back-button" onClick={() => navigate("/")}>
-          <ArrowLeft size={17} /> Back to Home
+          <ArrowLeft size={17} />
+          Back to Home
         </button>
       </nav>
 
@@ -117,6 +122,7 @@ function CreateMystery() {
           <section className="creation-form">
             <div className="form-heading">
               <span>01</span>
+
               <div>
                 <h2>Case Details</h2>
                 <p>Give your mystery a unique identity.</p>
@@ -124,6 +130,7 @@ function CreateMystery() {
             </div>
 
             <label htmlFor="case-title">MYSTERY TITLE (OPTIONAL)</label>
+
             <input
               id="case-title"
               type="text"
@@ -136,6 +143,7 @@ function CreateMystery() {
             />
 
             <label htmlFor="case-description">CUSTOM SCENARIO (OPTIONAL)</label>
+
             <textarea
               id="case-description"
               placeholder="Describe a setting or situation you'd like the AI to use..."
@@ -151,6 +159,7 @@ function CreateMystery() {
 
             <div className="form-heading">
               <span>02</span>
+
               <div>
                 <h2>Mystery Category</h2>
                 <p>Choose the type of case you want to investigate.</p>
@@ -179,6 +188,7 @@ function CreateMystery() {
 
             <div className="form-heading">
               <span>03</span>
+
               <div>
                 <h2>Investigation Difficulty</h2>
                 <p>Decide how challenging the case should be.</p>
@@ -297,6 +307,7 @@ function CreateMystery() {
 
             <div className="preview-note">
               <Clock3 size={17} />
+
               <p>
                 Your investigation settings will be used to prepare the case.
               </p>
@@ -311,23 +322,26 @@ function CreateMystery() {
                 <div className="generated-counts">
                   <div>
                     <strong>{generatedMystery.suspects?.length || 0}</strong>
+
                     <span>Suspects</span>
-                    <button
-                      className="generate-button"
-                      onClick={() =>
-                        navigate(`/investigation/${generatedMystery.id}`)
-                      }
-                    >
-                      Enter Investigation
-                      <ArrowRight size={18} />
-                    </button>
                   </div>
 
                   <div>
                     <strong>{generatedMystery.evidence?.length || 0}</strong>
+
                     <span>Evidence items</span>
                   </div>
                 </div>
+
+                <button
+                  className="generate-button"
+                  onClick={() =>
+                    navigate(`/investigation/${generatedMystery.id}`)
+                  }
+                >
+                  Enter Investigation
+                  <ArrowRight size={18} />
+                </button>
               </div>
             )}
           </aside>
