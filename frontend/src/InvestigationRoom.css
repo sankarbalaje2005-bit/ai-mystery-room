@@ -1,0 +1,443 @@
+.investigation-page {
+  min-height: 100vh;
+  background: #080d19;
+  color: #f4f1e9;
+  padding-bottom: 60px;
+}
+
+.investigation-navbar {
+  height: 75px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.investigation-container {
+  width: min(1100px, 88%);
+  margin: 55px auto;
+}
+
+.investigation-heading {
+  margin-bottom: 35px;
+}
+
+.investigation-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #e2b95f;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.investigation-heading h1 {
+  font-size: clamp(30px, 5vw, 48px);
+  margin: 18px 0 10px;
+}
+
+.investigation-heading > p {
+  color: #a7afbf;
+}
+
+.case-briefing,
+.suspect-card,
+.evidence-card {
+  background: #111a2b;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 15px;
+  padding: 25px;
+}
+
+.case-briefing {
+  margin-bottom: 45px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  color: #e2b95f;
+}
+
+.section-title h2 {
+  font-size: 17px;
+  letter-spacing: 1px;
+}
+
+.section-title > span {
+  margin-left: auto;
+  font-size: 11px;
+  color: #a7afbf;
+}
+
+.case-briefing > p,
+.suspect-card > p,
+.evidence-card > p {
+  color: #b9c0ce;
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+.case-setting {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.case-setting strong,
+.suspect-alibi strong {
+  color: #e2b95f;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+}
+
+.case-setting p,
+.suspect-alibi p {
+  color: #c4cad5;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.investigation-section {
+  margin-bottom: 45px;
+}
+
+.suspect-grid,
+.evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.suspect-card,
+.evidence-card {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.suspect-card:hover,
+.evidence-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(226, 185, 95, 0.5);
+}
+
+.suspect-number,
+.evidence-card > span {
+  color: #e2b95f;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+}
+
+.suspect-icon {
+  margin: 20px 0;
+  color: #e2b95f;
+}
+
+.suspect-card h3,
+.evidence-card h3 {
+  font-size: 19px;
+  margin-bottom: 12px;
+}
+
+.suspect-alibi {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.evidence-card h3 {
+  margin-top: 17px;
+}
+
+.investigation-notice {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid rgba(226, 185, 95, 0.3);
+  border-radius: 12px;
+  background: rgba(226, 185, 95, 0.06);
+  color: #e2b95f;
+}
+
+.investigation-notice p {
+  color: #c4cad5;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.investigation-loading {
+  min-height: 100vh;
+  background: #080d19;
+  color: #f4f1e9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  text-align: center;
+  padding: 25px;
+}
+
+.investigation-loading p {
+  color: #a7afbf;
+}
+
+.investigation-loading button {
+  padding: 12px 22px;
+  border: 0;
+  border-radius: 8px;
+  background: #e2b95f;
+  cursor: pointer;
+}
+
+@media (max-width: 650px) {
+  .investigation-navbar {
+    padding: 0 5%;
+  }
+
+  .investigation-container {
+    width: 90%;
+    margin: 35px auto;
+  }
+
+  .suspect-grid,
+  .evidence-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .case-briefing,
+  .suspect-card,
+  .evidence-card {
+    padding: 19px;
+  }
+}
+
+/* Evidence discovery system */
+
+.evidence-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  color: #c5a45e;
+}
+
+.evidence-locked {
+  border: 1px solid rgba(197, 164, 94, 0.25);
+}
+
+.evidence-discovered {
+  border: 1px solid rgba(72, 180, 130, 0.55);
+}
+
+.locked-description {
+  color: #9b9ba7;
+  font-style: italic;
+}
+
+.discover-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px;
+  border: 1px solid #c5a45e;
+  border-radius: 8px;
+  background: transparent;
+  color: #e5c77d;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.discover-button:hover:not(:disabled) {
+  background: #c5a45e;
+  color: #111827;
+}
+
+.discover-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.discovered-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 16px;
+  color: #72c99e;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.evidence-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 12px;
+  border: 1px solid #a84d4d;
+  border-radius: 8px;
+  color: #ff9999;
+  background: rgba(168, 77, 77, 0.12);
+}
+
+.loading-icon {
+  animation: evidence-spin 1s linear infinite;
+}
+
+@keyframes evidence-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Detective hint system */
+
+.hint-section {
+  margin-top: 10px;
+}
+
+.hint-panel {
+  padding: 25px;
+  border: 1px solid rgba(226, 185, 95, 0.25);
+  border-radius: 15px;
+  background: linear-gradient(145deg, #151f32, #101827);
+}
+
+.hint-panel-intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.hint-icon-wrap {
+  display: grid;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid rgba(226, 185, 95, 0.35);
+  border-radius: 12px;
+  background: rgba(226, 185, 95, 0.1);
+  color: #e2b95f;
+}
+
+.hint-panel-intro h3 {
+  margin: 2px 0 8px;
+  color: #f4f1e9;
+  font-size: 18px;
+}
+
+.hint-panel-intro p {
+  color: #aeb8c8;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.hint-usage-track {
+  height: 7px;
+  margin: 23px 0 18px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.hint-usage-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: #e2b95f;
+  transition: width 0.3s ease;
+}
+
+.hint-button {
+  display: inline-flex;
+  min-height: 45px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 12px 20px;
+  border: 1px solid #e2b95f;
+  border-radius: 9px;
+  background: #e2b95f;
+  color: #111827;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.hint-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: #f0cc7b;
+}
+
+.hint-button:disabled {
+  border-color: #596273;
+  background: #303b4d;
+  color: #aeb8c8;
+  cursor: not-allowed;
+}
+
+.revealed-hints {
+  display: grid;
+  gap: 13px;
+  margin-top: 25px;
+}
+
+.revealed-hints > h3 {
+  color: #e2b95f;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+}
+
+.hint-card {
+  padding: 18px;
+  border: 1px solid rgba(114, 201, 158, 0.3);
+  border-radius: 10px;
+  background: rgba(72, 180, 130, 0.06);
+}
+
+.hint-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: #72c99e;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.hint-card p {
+  color: #d0d6df;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.hint-error {
+  margin-top: 15px;
+}
+
+.hint-limit-message {
+  margin-top: 15px;
+  color: #aeb8c8;
+  font-size: 13px;
+}
+
+@media (max-width: 650px) {
+  .hint-panel {
+    padding: 19px;
+  }
+
+  .hint-button {
+    width: 100%;
+  }
+}
