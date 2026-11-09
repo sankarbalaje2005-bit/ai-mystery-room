@@ -6,8 +6,6 @@ Every clue tells a story. Can you uncover the truth?
 
 An AI-powered interactive detective investigation game where players solve fictional mysteries by examining suspects, discovering clues, analysing evidence and making final accusations.
 
-🚀 Live Demo | 💻 GitHub Repository
-
 ⸻
 
 📌 About the Project
